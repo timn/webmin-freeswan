@@ -1,6 +1,6 @@
 
  FreeS/WAN IPSec VPN Configuration Webmin Module - CHANGES
- Copyright (C) 1999-2000 by Tim Niemueller <tim@niemueller.de>
+ Copyright (C) 2000-2001 by Tim Niemueller <tim@niemueller.de>
  http://www.niemueller.de/webmin/modules/ipchains/
 
  This program is free software; you can redistribute it and/or modify
@@ -45,6 +45,11 @@
  (0.83.1)    - Finished edit_start
  (pre1)      - Declared 0.83.1-pre1 to Alpha for testers :-) I will finish the
                key managenment and connection status before release in Jan 2001
+ 05.01.2001  - Happy new year to you all
+ (0.83.1)    - Added functions to add and delete connections (expert only,
+               nearly no sanity checks, need to improve that through the whole
+               module! But that's stuff for the next version[s])
+             - Decided finally to release first version to the public
 
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 #    FreeS/WAN IPSEC VPN Configuration Webmin Module
-#    Copyright (C) 1999-2000 by Tim Niemueller <tim@niemueller.de>
+#    Copyright (C) 2000-2001 by Tim Niemueller <tim@niemueller.de>
 #    http://www.niemueller.de/webmin/modules/freeswan/
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -20,14 +20,15 @@
 require "./freeswan-lib.pl";
 &error_setup($text{'econn_err'});
 
-$in{'conn'} || &error($text{'econn_err_mis'});
+$in{'conn'} || ($in{'mode'} eq 'new') || &error($text{'econn_err_mis'});
 
 @pc=&parse_config();
 my $conn=&get_section(\@pc, 'conn', $in{'conn'});
-&error(&text('sconn_nof', $in{'conn'})) if (! defined($conn));
+&error(&text('sconn_nof', $in{'conn'})) if (! defined($conn) && ($in{'mode'} ne 'new') );
 
 
-&header($text{'econn_title'}, undef, "econn", undef, undef, undef,
+&header(($in{'mode'} ne 'new') ? $text{'econn_title'} : $text{'econn_newtitle'},
+        undef, "econn", undef, undef, undef,
         "Written by<BR><A HREF=mailto:tim\@niemueller.de>Tim Niemueller</A>".
         "<BR><A HREF=http://www.niemueller.de>Home://page</A>");
 print "<BR><HR>";
@@ -36,7 +37,9 @@ print "<FORM ACTION=\"save_conn.cgi\" METHOD=POST>\n",
       "<INPUT TYPE=hidden NAME=conn VALUE=\"$in{'conn'}\">",
       "<TABLE BORDER=2 CELLPADDING=2 CELLSPACING=0 $cb>\n",
       " <TR>\n",
-      "  <TD $tb WIDTH=100%><B>$text{'econn_general'} $in{'conn'}</B></TD>\n",
+      "  <TD $tb WIDTH=100%><B>$text{'econn_general'} ",
+      ($in{'conn'}) ? $in{'conn'} : $text{'econn_newconn'},
+      "</B></TD>\n",
       " </TR>\n",
       " <TR>\n",
       "  <TD>\n",
@@ -45,6 +48,10 @@ print "<FORM ACTION=\"save_conn.cgi\" METHOD=POST>\n",
       "    <TR>\n",
       "     <TD COLSPAN=2>\n",
       "      <TABLE BORDER=0>\n",
+
+      ($in{'mode'} eq 'new') ? "       <TR>\n".
+                               "        <TD><B>$text{'econn_name'}</B></TD>\n".
+                               "        <TD><INPUT TYPE=text SIZE=20 NAME=name></TD>" : "",
 
       "       <TR>\n",
       "        <TD><B>$text{'econn_type'}</B></TD>\n",
@@ -151,21 +158,33 @@ print "    </TR>\n",
       "  </TD>\n",
       " </TR>\n",
       " <TR>\n",
-      "  <TD>\n",
-      "   <TABLE BORDER=0 WIDTH=100%>\n",
-      "    <TR>\n",
-      "     <TD WIDTH=50% ALIGN=center><A HREF=\"edit_autokey.cgi?conn=",
-      &urlize($in{'conn'}),
-      "\">$text{'econn_eak'}</A></TD>",
-      "     <TD WIDTH=50% ALIGN=center><A HREF=\"edit_mankey.cgi?conn=",
-      &urlize($in{'conn'}),
-      "\">$text{'econn_emk'}</A></TD>",
-      "    </TR>\n",
-      "   </TABLE>\n",
-      "  </TD>\n",
-      " </TR>\n",
-      "</TABLE>\n",
-      "<INPUT TYPE=submit VALUE=\"$text{'save'}\"></FORM>\n";
+      "  <TD>\n";
+
+if ($in{'mode'} eq 'new') {
+
+  print $text{'econn_savefirst'};
+
+} else {
+
+  print "   <TABLE BORDER=0 WIDTH=100%>\n",
+        "    <TR>\n",
+        "     <TD WIDTH=50% ALIGN=center><A HREF=\"edit_autokey.cgi?conn=",
+        &urlize($in{'conn'}),
+        "\">$text{'econn_eak'}</A></TD>",
+        "     <TD WIDTH=50% ALIGN=center><A HREF=\"edit_mankey.cgi?conn=",
+        &urlize($in{'conn'}),
+        "\">$text{'econn_emk'}</A></TD>",
+        "    </TR>\n",
+        "   </TABLE>\n";
+}
+
+print   "  </TD>\n",
+        " </TR>\n",
+        "</TABLE>\n",
+        "<INPUT TYPE=submit NAME=save VALUE=\"$text{'save'}\">\n",
+        ($in{'mode'} ne 'new') ? "<INPUT TYPE=submit NAME=delete VALUE=\"$text{'delete'}\">" : "",
+        "</FORM>\n";
+
 
 
 

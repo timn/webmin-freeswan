@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 #    FreeS/WAN IPSEC VPN Configuration Webmin Module
-#    Copyright (C) 1999-2000 by Tim Niemueller <tim@niemueller.de>
+#    Copyright (C) 2000-2001 by Tim Niemueller <tim@niemueller.de>
 #    http://www.niemueller.de/webmin/modules/freeswan/
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -20,41 +20,80 @@
 require "./freeswan-lib.pl";
 @pc=&parse_config();
 my $section=&get_section(\@pc, 'conn', $in{'conn'});
-&error(&text('sconn_nof', $in{'conn'})) if (! defined($section));
+&error(&text('sconn_nof', $in{'conn'})) if (! defined($section) && ! defined($in{'name'}));
 
 $cf = &read_file_lines($ipsec_conf);
 
+if (defined($in{'name'})) {
+  # New connection
 
-# Type
-&section_save(\@pc, $section, $cf, 'type', 'tunnel', $in{'type'});
+  &error($text{'sconn_invname'}) if ($in{'name'} !~ /^[a-zA-Z][a-zA-Z0-9\._\-]*/);
 
-# Load/Start?
-&section_save(\@pc, $section, $cf, 'auto', 'ignore', $in{'auto'});
+  push(@{$cf}, "", "conn $in{'name'}");
+  push(@$cf, "\ttype=$in{'type'}") if ($in{'type'} ne 'tunnel');
+  push(@$cf, "\tauto=$in{'auto'}") if ($in{'auto'} ne 'ignore');
+  push(@$cf, "\tcompress=$in{'compress'}") if ($in{'compress'} ne 'no');
 
-# Compress?
-&section_save(\@pc, $section, $cf, 'compress', 'no', $in{'compress'});
+  foreach $side (left, right) {
+    push(@$cf, "\t$side=$in{$side}") if ($in{$side});
+    push(@$cf, "\t${side}subnet=".$in{"sub$side"}) if ($in{"sub$side"});
+    push(@$cf, "\t${side}nexthop=".$in{"gate$side"}) if ($in{"gate$side"});
+    push(@$cf, "\t${side}updown=".$in{"updown$side"}) if ($in{"updown$side"});
+    push(@$cf, "\t${side}firewall=".$in{"fw$side"}) if ($in{"fw$side"} && ($in{"fw$side"} ne 'no'));
+  }
 
-foreach $side (left, right) {
+} elsif (defined($in{'delete'})) {
+  # Delete a connection
 
-  # IP
-  &section_save(\@pc, $section, $cf, $side, '', $in{$side});
+  my $l=($section->{'end__line'} - $section->{'start__line'});
+  $l++;     # Difference is one too less because we want also to delete start and
+            # end line. Example: start__line=6, end__line=24, diff: 18, but we want
+            # to delete 19 lines because we also include the start line. Got it?
 
-  # Subnet
-  &section_save(\@pc, $section, $cf, "${side}subnet", '', $in{"sub$side"});
+  &error("Start: $section->{'start__line'} End: $section->{'end__line'} Length: $l") if $_DEBUG;
 
-  # Next Gateway
-  &section_save(\@pc, $section, $cf, "${side}nexthop", '', $in{"gate$side"});
+  splice(@{$cf}, $section->{'start__line'}, $l);
 
-  # Up/Down Script
-  &section_save(\@pc, $section, $cf, "${side}updown", '', $in{"updown$side"});
+} else {
+  # save a connection
 
-  # Punch Firewall Holes?
-  &section_save(\@pc, $section, $cf, "${side}firewall", 'no', $in{"fw$side"});
+  # Type
+  &section_save(\@pc, $section, $cf, 'type', 'tunnel', $in{'type'});
 
+  # Load/Start?
+  &section_save(\@pc, $section, $cf, 'auto', 'ignore', $in{'auto'});
+
+  # Compress?
+  &section_save(\@pc, $section, $cf, 'compress', 'no', $in{'compress'});
+
+  foreach $side (left, right) {
+
+    # IP
+    &section_save(\@pc, $section, $cf, $side, '', $in{$side});
+
+    # Subnet
+    &section_save(\@pc, $section, $cf, "${side}subnet", '', $in{"sub$side"});
+
+    # Next Gateway
+    &section_save(\@pc, $section, $cf, "${side}nexthop", '', $in{"gate$side"});
+
+    # Up/Down Script
+    &section_save(\@pc, $section, $cf, "${side}updown", '', $in{"updown$side"});
+
+    # Punch Firewall Holes?
+    &section_save(\@pc, $section, $cf, "${side}firewall", 'no', $in{"fw$side"});
+
+  }
 }
 
 
 &flush_file_lines();
-&redirect("edit_conn.cgi?conn=".&urlize($in{'conn'}));
+if (defined($in{'name'})) {
+  &redirect("edit_conn.cgi?conn=".&urlize($in{'name'}));
+} elsif (defined($in{'delete'})) {
+  &redirect();
+} else {
+  &redirect("edit_conn.cgi?conn=".&urlize($in{'conn'}));
+}
 
 ### END of save_conn.cgi ###.

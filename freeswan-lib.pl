@@ -1,6 +1,6 @@
 #
 #    FreeS/WAN IPSEC VPN Configuration Webmin Module Library
-#    Copyright (C) 1999-2000 by Tim Niemueller <tim@niemueller.de>
+#    Copyright (C) 2000-2001 by Tim Niemueller <tim@niemueller.de>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ $|=1;
 &ReadParse();
 our %access=&get_module_acl;
 our $cl=$text{'config_link'};
-our $version="0.83.1-pre1";
+our $version="0.83.1";
 
 our $ipsec_conf=($config{'conf'}) ? $config{'conf'} : "/etc/ipsec.conf";
 our $ipsec_secrets=($config{'sec'}) ? $config{'sec'} : "/etc/ipsec.secrets";
@@ -90,13 +90,18 @@ sub parse_config {
     if ($i == scalar(@$lines)-1) {
       # Go back until no more comments and blank lines
       # to get end__line of last section
-      my $j = $i-1;
-      while( ($lines->[$j] =~ /^#/) || ($lines->[$j] eq "")) {
-        $j--;
+      my $j = $i;
+      my $tmpline = $lines->[$j];
+      chomp $tmpline;
+      $tmpline =~ s/^\s+//;                                # Remove whitespaces at line begin
+      while( ($tmpline =~ /^#/) || ($tmpline eq "")) {
+        $tmpline = $lines->[--$j];
+        chomp $tmpline;
+        $tmpline =~ s/^\s+//;                                # Remove whitespaces at line begin
       }
       $cursec->{'end__line'} = $j;       # define end if current sec is defined
     }
-  }
+  } # END for
 
 return @rv;
 }

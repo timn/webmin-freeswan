@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 #    FreeS/WAN IPSEC VPN Configuration Webmin Module
-#    Copyright (C) 2000 by Tim Niemueller <tim@niemueller.de>
+#    Copyright (C) 2000-2001 by Tim Niemueller <tim@niemueller.de>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -70,7 +70,9 @@ if (scalar(@conns)) {
 #print "</UL>\n";
 #}
 
-print "<TABLE BORDER=0 WIDTH=100%><TR><TD ALIGN=right>",
+print "<TABLE BORDER=0 WIDTH=100%><TR>",
+      "<TD ALIGN=left><A HREF=\"edit_conn.cgi?mode=new\">$text{'index_newconn'}</A></TD>",
+      "<TD ALIGN=right>",
       "<FONT FACE=\"Arial,helvetica\" COLOR=\"#505050\">[ $version ] </FONT>",
       "</TD></TR></TABLE><HR>";
 

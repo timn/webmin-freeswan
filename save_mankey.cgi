@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 #    FreeS/WAN IPSEC VPN Configuration Webmin Module
-#    Copyright (C) 1999-2000 by Tim Niemueller <tim@niemueller.de>
+#    Copyright (C) 2000-2001 by Tim Niemueller <tim@niemueller.de>
 #    http://www.niemueller.de/webmin/modules/freeswan/
 #
 #    This program is free software; you can redistribute it and/or modify
