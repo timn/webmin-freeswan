@@ -1,0 +1,4 @@
+conf=Configuration file,3,/etc/ipsec.conf
+sec=Secrets file,3,/etc/ipsec.secrets
+netifaces=Network interfaces,3,Auto Detect
+ipseccomm=FreeS/WAN ipsec command location,3,Automatic

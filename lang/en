@@ -1,0 +1,154 @@
+
+lang=en
+author=Tim Niemueller <tim@niemueller.de>
+module_author=Tim Niemueller <tim@niemueller.de>
+homepage=http://www.niemueller.de/webmin/modules/freeswan/
+copyright=(C) 2000 by Tim Niemueller <tim@niemueller.de>
+license=GPL
+
+index_title=FreeS/WAN VPN
+index_ifaces=Interfaces
+index_loadconn=Connections on start
+index_pluto=Pluto IKE
+index_debug=Debug & Log
+index_defaultc=Connection Defaults
+index_status=Connection Status
+index_info=FreeS/WAN Info
+index_conns=Connections
+index_noconn=No connections found
+index_keys=Keys
+
+eifcs_title=Edit Interfaces
+eifcs_heading=Exit interface mappings
+eifcs_return=module index
+eifcs_name=Interface
+eifcs_mapto=Map to
+eifcs_defrt=Default Route Interface as ipsec0
+eifcs_below=As mapped below
+
+edebug_title=Debug & Log
+edebug_klipsdebug=KLIPS Debug
+edebug_all=All
+edebug_none=None
+edebug_listed=Listed..
+edebug_plutodebug=Pluto Debug
+edebug_syslog=Syslog settings for startup/shutdown messages
+edebug_syslfac=Facility
+edebug_syslpri=Priority
+edebug_coredump=Core dump settings for programs started by ipsec
+edebug_nocore=No core dumps
+edebug_docore=To directory
+
+vinfo_title=View Info
+vinfo_return=module index
+
+epluto_title=Pluto Settings
+epluto_heading=Edit Pluto parameters
+epluto_run=Run Pluto?
+epluto_wait=Wait for negotiation attempt before starting next?
+epluto_bg=Load and start connections in background?
+epluto_pre=Pre Pluto Command
+epluto_post=Post Pluto Command
+epluto_return=module index
+
+econn_err=Failed to edit connection
+econn_err_mis=No connection given
+econn_title=Edit Connection
+econn_general=General Settings for
+econn_type=Type
+econn_type_tunnel=Tunnel
+econn_type_transport=Transport
+econn_type_passthrough=Passthrough
+econn_auto=On Startup
+econn_auto_ignore=Ignore
+econn_auto_add=Load/Add
+econn_auto_start=Start
+econn_compress=Compress
+econn_left=Settings for left side
+econn_right=Settings for right side
+econn_ip=IP Address
+econn_sub=Subnet
+econn_gate=Next Gateway
+econn_updown=Up/Down Script
+econn_fw=Firewall
+econn_return=module index
+econn_eak=Edit Auto Keying Settings
+econn_emk=Edit Manual Keying Settings
+
+eak_title=Auto Keying Settings
+eak_autokey=Parameters for automatic keying for <I>$1</I>
+eak_keyex=Key Exchange Method
+eak_perffor=Perfect Forward Secrecy
+eak_auth=Authentication protocol
+eak_authby=Authentication method
+eak_leftid=Left Host's ID
+eak_rightid=Right Host's ID
+eak_leftidauto=Left IP
+eak_rightidauto=Right IP
+eak_leftrsa=Left RSA public key
+eak_none=None
+eak_dns=From DNS
+eak_rightrsa=Right RSA public key
+eak_keylife=Key Lifetime
+eak_rekeymargin=Rekeying Margin
+eak_rekeyfuzz=Increase Factor for Margin
+eak_keyingtries=No. of Keying Tries
+eak_ikelifetime=IKE Connection Lifetime
+eak_return=edit connection '<I>$1</I>'
+
+emk_title=Manual Keying Settings
+emk_mankey=Parameters for manual keying for <I>$1</I>
+emk_spi=Security Parameter Index
+emk_spibase=SPI Base
+emk_esp=ESP Encryption/Authentication
+emk_ah=AH Authentication
+emk_espenckey=ESP Encryption Key
+emk_auto=Automatic
+emk_espauthkey=ESP Authentication Key
+emk_ahauthkey=AH Authentication Key
+emk_ahrwin=AH Replay Window
+emk_left=Left Settings
+emk_right=Right Settings
+emk_espspi=ESP SPI
+emk_ahspi=AH SPI
+emk_ipssec=None/From ipsec.secrets
+emk_none=None
+emk_espnone=None
+emk_ahnone=None
+
+estart_title=IPSec Start
+estart_load=Connections to be <I>loaded</I> on IPSec startup
+estart_start=Connections to be <I>started</I> on IPSec startup
+estart_search=As defined for connections
+estart_below=As listed below
+estart_none=None
+estart_return=module index
+
+lib_err=Failed to load FreeS/WAN IPSsec Configuration Webmin Module
+lib_err_nosupport=It seems that your system does not support FreeS/WAN IPSEC
+lib_err_syn=Invalid section name '$1' in line $2
+lib_noifc=Not enabled
+lib_err_nocomm=Cannot find the ipsec command. Please define it in the $1.
+lib_modconf=Module Configuration
+
+sifcs_nodef=You selected to define the interfaces yourself but you did not define any.
+
+sdebug_nocoredir=You choose to have core dumps but not where to store them
+sdebug_invcall=Invalid Call of save_debug. Aborting!
+sdebug_klipsdebug=You choose to select options for debugging of KLIPS but you didn't choose any.
+sdebug_plutodebug=You choose to select options for debugging of Pluto but you didn't choose any.
+
+sconn_nof=The connection '$1' could not been found.
+
+smk_noespenc=You have chosen automatic key generation for ESP Encryption. But you did choose not to use ESP.
+smk_noespauth=You have chosen automatic key generation for ESP Authentication. But you did choose not to use ESP Authentication.
+smk_noah=You have chosen automatic key generation for AH. But you did choose not to use AH.
+
+vstat_title=View Status
+vstat_return=module index
+
+lkeys_title=List Keys
+lkeys_return=module index
+
+sstart_noload=You chose to <I>load</I> the connections you defined. But you did not select any!
+sstart_nostart=You chose to <I>start</I> the connections you defined. But you did not select any!

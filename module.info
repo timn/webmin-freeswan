@@ -1,0 +1,6 @@
+name=freeswan
+desc=FreeS/WAN VPN
+desc_de=FreeS/WAN VPN
+os_support=redhat-linux debian-linux slackware-linux suse-linux rocksolid-linux open-linux corel-linux turbo-linux cobalt-linux lfs-linux
+depends=0.83
+category=net
